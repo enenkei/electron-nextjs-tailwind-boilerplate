@@ -1,0 +1,34 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "concurrently \"cross-env NODE_ENV=development npm run dev:next\" \"cross-env NODE_ENV=development npm run dev:electron\"",
+    "dev:next": "cd renderer && npm run dev",  
+    "build": "npm run build:next && npm run build:electron",
+    "build:next": "next build && next export -o out",
+    "build:electron": "tsc -p tsconfig.electron.json",  
+    "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development npm run build:electron && electron .",
+    "start": "electron .",
+    "package": "electron-builder"
+  },
+  "build": {
+    "appId": "com.example.myapp",
+    "files": [
+      "main/**/*",
+      "out/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^36.2.1",
+    "electron-builder": "^26.0.12",
+    "wait-on": "^8.0.3"
+  }
+}
